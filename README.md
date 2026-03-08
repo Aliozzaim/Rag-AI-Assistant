@@ -1,4 +1,4 @@
-# - Microsoft Teams AI Assistant Backend
+# AI Assistant
 
 A secure, read-only backend service for the Microsoft Teams AI assistant that provides intelligent answers based on a knowledge base using vector search and AWS Bedrock.
 
