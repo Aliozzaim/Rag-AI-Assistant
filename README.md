@@ -3,11 +3,7 @@
 A secure, read-only backend service for the Microsoft Teams AI assistant that provides intelligent answers based on a knowledge base using vector search and AWS Bedrock.
 
 
-![Uploading WhatsApp Image 2026-03-08 at 15.12.53.jpeg…]()
-
-
-
-
+![AI Assistant UI](https://github.com/user-attachments/assets/1de4557b-01f2-47b7-abec-db6d82116e5d)
 
 
 ## 🚀 Features
