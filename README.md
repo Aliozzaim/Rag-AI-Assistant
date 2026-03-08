@@ -2,8 +2,8 @@
 
 A secure, read-only backend service for the Microsoft Teams AI assistant that provides intelligent answers based on a knowledge base using vector search and AWS Bedrock.
 
-
-![AI Assistant UI](https://github.com/user-attachments/assets/1de4557b-01f2-47b7-abec-db6d82116e5d)
+AI Assistant UI
+![AI Assistant UI](https://github.com/user-attachments/assets/91d7f947-530b-466b-8823-5fa0954db181)
 
 
 ## 🚀 Features
