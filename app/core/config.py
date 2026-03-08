@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     # Qdrant Configuration
     qdrant_url: str = "https://api.qdrant.io"
     qdrant_api_key: Optional[str] = None
-    qdrant_collection_name: str = "sparky_knowledge_base"
+    qdrant_collection_name: str = "_knowledge_base"
 
     # Embedding Model Configuration
     embedding_provider: str = "bedrock"  # Options: 'bedrock', 'local', 'openai'

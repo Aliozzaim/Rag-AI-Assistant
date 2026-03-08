@@ -55,7 +55,7 @@ class CacheService:
         normalized = question.lower().strip()
         # Generate hash
         hash_obj = hashlib.md5(normalized.encode())
-        return f"sparky:answer:{hash_obj.hexdigest()}"
+        return f":answer:{hash_obj.hexdigest()}"
     
     def get(self, question: str) -> Optional[dict]:
         """

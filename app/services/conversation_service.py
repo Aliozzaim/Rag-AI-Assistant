@@ -42,7 +42,7 @@ class ConversationService:
 
     def _get_conversation_key(self, conversation_id: str) -> str:
         """Generate Redis key for conversation."""
-        return f"sparky:conversation:{conversation_id}"
+        return f":conversation:{conversation_id}"
 
     def get_history(self, conversation_id: str, max_messages: int = 10) -> List[Dict]:
         """

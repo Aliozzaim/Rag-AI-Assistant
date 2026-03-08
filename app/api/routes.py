@@ -671,7 +671,7 @@ async def add_embedding(
 async def root():
     """Root endpoint."""
     return {
-        "service": "Sparky AI Assistant API",
+        "service": " AI Assistant API",
         "version": "1.0.0",
         "endpoints": {
             "ask": "/ask",

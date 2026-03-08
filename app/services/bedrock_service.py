@@ -125,7 +125,7 @@ Current Question: {question}
 Answer:"""
         else:
             # No chunks found - ask for clarification
-            prompt = f"""You are Sparky, a helpful AI assistant for Microsoft Teams. 
+            prompt = f"""You are , a helpful AI assistant for Microsoft Teams. 
 
 IMPORTANT: No relevant information was found in the knowledge base for this question.{conversation_context}
 

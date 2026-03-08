@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Sparky AI Assistant API",
+    title=" AI Assistant API",
     description="Backend service for Microsoft Teams AI assistant",
     version="1.0.0"
 )
@@ -70,7 +70,7 @@ app.add_middleware(
 
 # Initialize services
 logger.info("=" * 60)
-logger.info("Initializing Sparky AI Assistant Services")
+logger.info("Initializing  AI Assistant Services")
 logger.info("=" * 60)
 logger.info(f"Embedding Provider: {settings.embedding_provider}")
 logger.info(f"Embedding Model: {settings.embedding_model}")
