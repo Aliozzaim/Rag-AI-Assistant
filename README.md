@@ -46,7 +46,7 @@ AI Assistant UI
 4. Combines and ranks results from all sources
 5. Builds prompt with retrieved chunks and instructions
 6. Calls AWS Bedrock LLM to generate answer
-7. Returns answer with source citations from all sources
+7. Returns answer with source citations from all sources.
 
 ## Setup
 
