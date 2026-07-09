@@ -102,7 +102,7 @@ The `env.example` file includes:
 - AWS Bedrock settings
 - Optional MongoDB product database configuration
 - Optional Stash and Confluence configurations
-- All other required settings with examples
+- All other required settings with examples.
 
 5. Start the service:
 
