@@ -1,7 +1,11 @@
 import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-const API_KEY = import.meta.env.VITE_API_KEY || 'test'
+const API_KEY = import.meta.env.VITE_API_KEY
+
+if (!API_KEY) {
+  throw new Error('VITE_API_KEY must be configured')
+}
 
 const apiClient = axios.create({
   baseURL: API_URL,

@@ -23,7 +23,7 @@ cp .env.example .env
 3. **Update `.env` with your configuration:**
 ```
 VITE_API_URL=http://localhost:8000
-VITE_API_KEY=test
+VITE_API_KEY=replace-with-your-api-key
 ```
 
 4. **Start development server:**
