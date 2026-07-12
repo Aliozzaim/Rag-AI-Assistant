@@ -33,8 +33,8 @@ logger = logging.getLogger(__name__)
 # Create router
 router = APIRouter()
 
-# Rate limiting (will be initialized in main.py)
-limiter = None
+# Rate limiting is shared with main.py so decorators are active at import time.
+limiter = Limiter(key_func=get_remote_address)
 
 
 def init_limiter(limiter_instance):
@@ -59,9 +59,11 @@ async def verify_api_key(
         HTTPException: If API key is missing or invalid
     """
     if not settings.api_key:
-        # If no API key configured, skip authentication
-        logger.warning("API key authentication disabled (no API_KEY set)")
-        return
+        logger.error("API_KEY is not configured; rejecting authenticated request")
+        raise HTTPException(
+            status_code=500,
+            detail="API authentication is not configured"
+        )
 
     if not x_api_key or x_api_key != settings.api_key:
         remote_address = get_remote_address(request)
@@ -70,6 +72,27 @@ async def verify_api_key(
         raise HTTPException(
             status_code=401,
             detail="Invalid or missing API key"
+        )
+
+
+async def verify_admin_api_key(
+    request: Request,
+    x_api_key: Optional[str] = Header(None, alias="X-API-Key")
+):
+    """Verify the administrator API key for write endpoints."""
+    if not settings.admin_api_key:
+        logger.error("ADMIN_API_KEY is not configured; rejecting admin request")
+        raise HTTPException(
+            status_code=500,
+            detail="Admin authentication is not configured"
+        )
+
+    if not x_api_key or x_api_key != settings.admin_api_key:
+        remote_address = get_remote_address(request)
+        logger.warning(f"Invalid admin API key attempt from {remote_address}")
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or missing admin API key"
         )
 
 
@@ -158,6 +181,7 @@ async def health_check():
 
 
 @router.post("/ask", response_model=AskResponse)
+@limiter.limit(f"{settings.rate_limit_per_minute}/minute")
 async def ask_question(
     request: Request,
     ask_request: AskRequest,
@@ -510,6 +534,7 @@ async def ask_question(
 
 
 @router.post("/add-embedding", response_model=AddEmbeddingResponse)
+@limiter.limit(f"{settings.admin_rate_limit_per_minute}/minute")
 async def add_embedding(
     request: Request,
     embedding_request: AddEmbeddingRequest,
@@ -519,7 +544,7 @@ async def add_embedding(
         1000, description="Chunk size for text splitting", ge=100, le=5000),
     overlap: int = Query(
         200, description="Overlap between chunks", ge=0, le=1000),
-    _: None = Depends(verify_api_key)
+    _: None = Depends(verify_admin_api_key)
 ):
     """
     Add embeddings to Qdrant via API.

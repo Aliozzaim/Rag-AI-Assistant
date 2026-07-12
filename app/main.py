@@ -6,12 +6,11 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.core.config import settings
-from app.api.routes import router, init_services, init_limiter
+from app.api.routes import router, init_services, limiter
 from app.services.vector_db import VectorDBService
 from app.services.bedrock_service import BedrockService
 from app.services.cache_service import CacheService
@@ -36,33 +35,30 @@ app = FastAPI(
 )
 
 # Rate limiting
-limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
-# Initialize rate limiter in routes
-init_limiter(limiter)
 
 # Add validation error handler for better debugging
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    """Log validation errors for debugging."""
-    body = await request.body()
+    """Log validation errors without echoing sensitive request bodies."""
     logger.error(f"Validation error on {request.url.path}")
     logger.error(f"Validation errors: {exc.errors()}")
-    logger.error(f"Request body: {body.decode('utf-8', errors='ignore')}")
     return JSONResponse(
         status_code=422,
         content={
-            "detail": exc.errors(),
-            "body": body.decode('utf-8', errors='ignore')
+            "detail": exc.errors()
         }
     )
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict in production
+    allow_origins=[
+        origin.strip()
+        for origin in settings.cors_allowed_origins.split(",")
+        if origin.strip()
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

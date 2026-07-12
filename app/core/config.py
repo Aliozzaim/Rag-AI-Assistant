@@ -35,13 +35,16 @@ class Settings(BaseSettings):
     openai_api_key: Optional[str] = None  # Only needed if provider is 'openai'
 
     # API Security
-    api_key: str = ""
+    api_key: Optional[str] = None
+    admin_api_key: Optional[str] = None
     api_key_header: str = "X-API-Key"
+    cors_allowed_origins: str = "http://localhost:3000"
 
     # Application Configuration
     log_level: str = "INFO"
     cache_ttl_seconds: int = 3600
     rate_limit_per_minute: int = 60
+    admin_rate_limit_per_minute: int = 10
     max_question_length: int = 2000
     max_retrieval_chunks: int = 5
     # Score threshold for vector similarity search (lower = more results, higher = more precise)
